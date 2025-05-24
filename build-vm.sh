@@ -11,6 +11,7 @@ cd buildroot-2024.02
 make qemu_x86_64_defconfig || make menuconfig
 make TRUE=/usr/bin/true
 
-cp output/images/rootfs.ext2 ../../vm/test_os.img
+mkdir -p /app/vm
+cp output/images/rootfs.ext2 /app/vm/test_os.img
 cd ../..
 echo "[X] VM image ready at vm/test_os.img"

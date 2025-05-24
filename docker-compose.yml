@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: s2os
+    container_name: s2os_builder
+    volumes:
+      - ./output_docker/vm:/app/vm
+  siege-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    image: security_siege_ui
+    container_name: siege_gui
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./plugins:/app/plugins
+      - ./vm:/app/vm
+      - ./attack_history.csv:/app/attack_history.csv
+    depends_on:
+      - builder
+    command: streamlit run app.py --server.address=0.0.0.0
