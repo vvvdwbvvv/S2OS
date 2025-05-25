@@ -176,3 +176,4 @@ cython_debug/
 /vm
 output_docker
 gnu-bin
+.DS_Store
