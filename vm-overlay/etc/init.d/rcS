@@ -1,0 +1,23 @@
+#!/bin/sh
+
+echo "[VM] Booting system..."
+
+# Mount the root filesystem
+mkdir -p /mnt/host0
+mount -t 9p -o trans=virtio host0 /mnt/host0
+echo "[VM] Mounted /mnt/host0"
+ls -l /mnt/host0
+cat /mnt/host0/payload.txt
+
+if [ -f /mnt/host0/payload.txt ]; then
+    cp /mnt/host0/payload.txt /payload.txt
+    echo "[VM] Payload copied to /payload.txt"
+else
+    echo "[VM] payload.txt not found!"
+fi
+
+chmod +x /app/vuln_buffer
+
+/app/vuln_buffer
+
+echo "[VM] Completed execution."

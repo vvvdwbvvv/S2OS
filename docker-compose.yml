@@ -4,17 +4,33 @@ services:
   builder:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.vm-builder
     image: s2os
     container_name: s2os_builder
     volumes:
       - ./vm:/app/vm
-  siege-ui:
+    platform: linux/amd64
+    entrypoint: ["/app/build-vm.sh"]
+
+  qemu-vm:
+    image: ubuntu:22.04
+    container_name: s2os_qemu
+    depends_on:
+      - builder
+    volumes:
+      - ./vm:/vm
+    working_dir: /vm
+    entrypoint: ["/vm/start-vm.sh"]
+    tty: true
+    stdin_open: true
+    platform: linux/amd64
+
+  ui:
     build:
       context: .
       dockerfile: Dockerfile.ui
-    image: security_siege_ui
-    container_name: siege_gui
+    image: s2os_ui
+    container_name: s2os_ui_container
     ports:
       - "8501:8501"
     volumes:
