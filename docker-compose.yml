@@ -13,14 +13,15 @@ services:
     entrypoint: ["/app/build-vm.sh"]
 
   qemu-vm:
-    image: ubuntu:22.04
+    build:
+      context: .
+      dockerfile: Dockerfile.qemu-runner
+    image: simsecureos-qemu
     container_name: s2os_qemu
     depends_on:
       - builder
     volumes:
       - ./vm:/vm
-    working_dir: /vm
-    entrypoint: ["/vm/start-vm.sh"]
     tty: true
     stdin_open: true
     platform: linux/amd64
