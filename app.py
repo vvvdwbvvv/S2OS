@@ -1,8 +1,6 @@
 # app.py
 import streamlit as st
 import ctypes
-import os
-import pandas as pd
 from utils.plugin_loader import load_plugins
 from utils.vm_controller import run_vm_and_check
 from utils.defense_config import render_defense_config

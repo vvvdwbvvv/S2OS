@@ -34,3 +34,12 @@ def run_vm_and_check(kernel_path, image_path, log_path, keyword="EXPLOIT_SUCCESS
         proc.terminate()
 
     return False
+
+
+def run_vagrant_and_check(*, log_path, **kwargs):
+    subprocess.run(["vagrant", "ssh", "-c", "bash /vagrant/start_vm.sh"], timeout=15)
+
+    with open("vm/serial.log", "r") as f:
+        log = f.read()
+        return any(keyword in log for keyword in ["Segmentation fault", "pwned", "uid=0"])
+

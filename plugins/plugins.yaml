@@ -1,0 +1,9 @@
+- name: Buffer Overflow
+  cve: CVE-2023-0001
+  arch: x86_64
+  so_path: plugins/buffer_overflow.so
+
+- name: Format String Exploit
+  cve: CVE-2023-0002
+  arch: x86_64
+  so_path: plugins/format_string.so

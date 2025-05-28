@@ -20,3 +20,10 @@ def load_plugins(plugin_root="plugins"):
             meta.setdefault("arch", "unknown")
             plugins.append(meta)
     return plugins
+
+PLUGIN_YAML_PATH = os.path.join("plugins", "plugins.yaml")
+
+def load_plugins_v2(): # read from plugins.yaml
+    with open(PLUGIN_YAML_PATH, "r") as f:
+        plugins = yaml.safe_load(f)
+    return plugins
