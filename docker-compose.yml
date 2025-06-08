@@ -1,43 +1,36 @@
-version: '3.8'
 
 services:
-  builder:
-    build:
-      context: .
-      dockerfile: Dockerfile.vm-builder
-    image: s2os
-    container_name: s2os_builder
-    volumes:
-      - ./vm:/app/vm
-    platform: linux/amd64
-    entrypoint: ["/app/build-vm.sh"]
+  redis:
+    image: redis:7
+    command: redis-server --save "" --appendonly no
 
-  qemu-vm:
+  api:
     build:
       context: .
-      dockerfile: Dockerfile.qemu-runner
-    image: simsecureos-qemu
-    container_name: s2os_qemu
+      dockerfile: api/Dockerfile
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    env_file: .env
     depends_on:
-      - builder
-    volumes:
-      - ./vm:/vm
-    tty: true
-    stdin_open: true
-    platform: linux/amd64
+      - redis
+    ports:
+      - "8000:8000"
 
-  ui:
+  worker:
     build:
       context: .
-      dockerfile: Dockerfile.ui
-    image: s2os_ui
-    container_name: s2os_ui_container
+      dockerfile: worker/Dockerfile
+    command: celery -A app.tasks worker --loglevel=info
+    env_file: .env
+    depends_on:
+      - redis
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+    environment:
+      - API_BASE=http://api:8000
+    depends_on:
+      - api
     ports:
       - "8501:8501"
-    volumes:
-      - ./plugins:/app/plugins
-      - ./vm:/app/vm
-      - ./attack_history.csv:/app/attack_history.csv
-    depends_on:
-      - builder
-    command: streamlit run app.py --server.address=0.0.0.0
