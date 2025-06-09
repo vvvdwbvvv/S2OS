@@ -1,38 +1,7 @@
-{"timestamp": "2025-06-08T08:24:57.056583Z", "event": "vm_started", "detail": {"type": "docker", "container": "vuln2"}}
-{"timestamp": "2025-06-08T08:26:48.478943Z", "event": "vm_started", "detail": {"type": "docker", "container": "vuln2"}}
-{"timestamp": "2025-06-08T08:27:00.182871Z", "event": "detected", "detail": {"open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:27:00.183428Z", "event": "exposed", "detail": {"plugin": "kernel_exploit", "open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:27:00.183531Z", "event": "exploit_start", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-08T08:27:05.843886Z", "event": "vm_started", "detail": {"type": "docker", "container": "vuln2"}}
-{"timestamp": "2025-06-08T08:27:17.472325Z", "event": "detected", "detail": {"open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:27:17.472817Z", "event": "exposed", "detail": {"plugin": "kernel_exploit", "open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:27:17.473226Z", "event": "exploit_start", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-08T08:29:09.351855Z", "event": "vm_started", "detail": {"type": "docker", "container": "vuln2"}}
-{"timestamp": "2025-06-08T08:29:20.973707Z", "event": "detected", "detail": {"open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:29:20.973952Z", "event": "exposed", "detail": {"plugin": "kernel_exploit", "open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:29:20.974013Z", "event": "warning", "detail": {"msg": "Plugin missing cmd, using default", "auto_cmd": ["bash", "-c", "chmod +x /opt/plugins/kernel_exploit.so && /opt/plugins/kernel_exploit.so"]}}
-{"timestamp": "2025-06-08T08:29:20.974064Z", "event": "exploit_start", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-08T08:47:28.512389Z", "event": "vm_started", "detail": {"type": "docker", "container": "vuln2"}}
-{"timestamp": "2025-06-08T08:47:40.222671Z", "event": "detected", "detail": {"open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:47:40.223418Z", "event": "exposed", "detail": {"plugin": "kernel_exploit", "open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:47:40.223569Z", "event": "warning", "detail": {"msg": "自动生成 cmd", "auto_cmd": ["bash", "-c", "chmod +x /opt/plugins/kernel_exploit.so && /opt/plugins/kernel_exploit.so"]}}
-{"timestamp": "2025-06-08T08:47:40.223682Z", "event": "exploit_start", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-08T08:47:40.325607Z", "event": "exploit_output", "detail": {"output": "chmod: cannot access `/opt/plugins/kernel_exploit.so': No such file or directory\n"}}
-{"timestamp": "2025-06-08T08:47:40.326235Z", "event": "exploit_failed", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-08T08:47:40.494997Z", "event": "vm_stopped", "detail": {"container": "vuln2"}}
-{"timestamp": "2025-06-08T08:52:21.354761Z", "event": "vm_started", "detail": {"type": "docker", "container": "vuln2"}}
-{"timestamp": "2025-06-08T08:52:33.078281Z", "event": "detected", "detail": {"open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:52:33.078770Z", "event": "exposed", "detail": {"plugin": "kernel_exploit", "open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:52:33.078834Z", "event": "warning", "detail": {"msg": "自动生成 cmd", "auto_cmd": ["bash", "-c", "chmod +x /opt/app/plugins/kernel_exploit/kernel_exploit.so && /opt/app/plugins/kernel_exploit/kernel_exploit.so"]}}
-{"timestamp": "2025-06-08T08:52:33.078935Z", "event": "exploit_start", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-08T08:52:33.163603Z", "event": "exploit_output", "detail": {"output": "chmod: changing permissions of `/opt/app/plugins/kernel_exploit/kernel_exploit.so': Read-only file system\n"}}
-{"timestamp": "2025-06-08T08:52:33.163870Z", "event": "exploit_failed", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-08T08:52:33.312671Z", "event": "vm_stopped", "detail": {"container": "vuln2"}}
-{"timestamp": "2025-06-08T08:55:56.624971Z", "event": "vm_started", "detail": {"type": "docker", "container": "vuln2"}}
-{"timestamp": "2025-06-08T08:56:08.276426Z", "event": "detected", "detail": {"open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:56:08.277041Z", "event": "exposed", "detail": {"plugin": "kernel_exploit", "open_ports": [{"port": 80, "proto": "tcp", "service": "http", "banner": "Apache httpd 2.2.8"}]}}
-{"timestamp": "2025-06-08T08:56:08.277468Z", "event": "warning", "detail": {"msg": "自动生成 cmd", "auto_cmd": ["bash", "-c", "chmod +x /opt/app/plugins/kernel_exploit/kernel_exploit.so && /opt/app/plugins/kernel_exploit/kernel_exploit.so"]}}
-{"timestamp": "2025-06-08T08:56:08.277628Z", "event": "exploit_start", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-08T08:56:08.362881Z", "event": "exploit_output", "detail": {"output": "chmod: changing permissions of `/opt/app/plugins/kernel_exploit/kernel_exploit.so': Read-only file system\n"}}
-{"timestamp": "2025-06-08T08:56:08.363659Z", "event": "exploit_failed", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-08T08:56:08.526483Z", "event": "vm_stopped", "detail": {"container": "vuln2"}}
+[]{"timestamp": "2025-06-09T05:17:34.922910Z", "event": "vm_started", "detail": {"type": "fake"}}
+{"timestamp": "2025-06-09T05:17:35.142619Z", "event": "exposed", "detail": {"plugin": null, "open_ports": [22, 443]}}
+{"timestamp": "2025-06-09T05:17:35.143686Z", "event": "exposed", "detail": {"plugin": "kernel_exploit", "open_ports": [22, 443]}}
+{"timestamp": "2025-06-09T05:17:35.320965Z", "event": "exploit_start", "detail": {"plugin": "kernel_exploit"}}
+{"timestamp": "2025-06-09T05:17:35.321100Z", "event": "exploit_output", "detail": {"output": "EXPLOIT_SUCCESS"}}
+{"timestamp": "2025-06-09T05:17:35.321641Z", "event": "exploited", "detail": {"plugin": "kernel_exploit", "success": true, "output": "EXPLOIT_SUCCESS"}}
+{"timestamp": "2025-06-09T05:17:35.424973Z", "event": "vm_stopped", "detail": {}}

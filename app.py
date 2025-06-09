@@ -10,6 +10,20 @@ from utils.history_manager import initialize_history_file
 from utils.attack_manager import run_attack
 from utils.vm_controller import run_defense
 from utils.history_manager import load_events
+import time
+
+SERIAL_LOG = "serial.log"
+
+def append_serial_log(msg):
+    with open(SERIAL_LOG, "a") as f:
+        f.write(f"{time.strftime('%H:%M:%S')} [UI] {msg}\n")
+
+for level in ["success", "info", "error", "warning", "write"]:
+    orig = getattr(st, level)
+    def wrapper(msg, level=level, orig=orig, **kwargs):
+        append_serial_log(msg)
+        return orig(msg, **kwargs)
+    setattr(st, level, wrapper)
 
 st.set_page_config(page_title="S2OS", layout="wide")
 st.title("SimSecureOS - 攻擊模擬平台")
@@ -43,6 +57,13 @@ if st.sidebar.button("🛡️ 執行防禦"):
     out = run_defense(defense_config)
     st.sidebar.text(out)
 
+st.subheader("Serial Log")
+try:
+    with open("serial.log") as f:
+        log = f.read()
+    st.code(log, language="bash")
+except FileNotFoundError:
+    st.info("=No Serial log found")
 
 st.subheader("事件序列")
 events = load_events()

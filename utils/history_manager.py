@@ -4,7 +4,7 @@ import pandas as pd
 import json
 from datetime import datetime
 
-HISTORY_PATH = "../attack_history.csv"
+HISTORY_PATH = "attack_history.csv"
 EVENT_LOG = "events.jsonl"
 
 def initialize_history_file():
@@ -14,19 +14,23 @@ def initialize_history_file():
             writer.writeheader()
 
 def record_attack(plugin, success, defense_config):
+    fieldnames = ["timestamp", "plugin", "cve", "success", "aslr", "dep", "canary"]
     row = {
         "timestamp": datetime.now().isoformat(),
-        "plugin": plugin["name"],
-        "cve": plugin["cve"],
+        "plugin": plugin.get("name"),
+        "cve": plugin.get("cve"),
         "success": success,
-        **defense_config
+        "aslr": defense_config.get("aslr"),
+        "dep": defense_config.get("dep"),
+        "canary": defense_config.get("canary"),
     }
-    write_header = not os.path.exists(HISTORY_PATH)
+    write_header = not os.path.exists(HISTORY_PATH) or os.path.getsize(HISTORY_PATH) == 0
     with open(HISTORY_PATH, "a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=row.keys())   
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         if write_header:
             writer.writeheader()
         writer.writerow(row)
+
 
 def load_history():
     if os.path.exists(HISTORY_PATH) and os.path.getsize(HISTORY_PATH) > 0:
@@ -60,3 +64,7 @@ def load_events():
             except json.JSONDecodeError:
                 continue
     return events
+
+def clear_event_log():
+    with open(EVENT_LOG, "w") as f:
+        json.dump([], f)

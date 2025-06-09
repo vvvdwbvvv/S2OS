@@ -1,0 +1,2 @@
+timestamp,plugin,cve,success,aslr,dep,canary
+2025-06-09T13:17:35.425181,kernel_exploit,CVE-2025-1234,True,True,True,False
