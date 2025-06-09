@@ -1,5 +1,5 @@
 # utils/attack_manager.py
-from utils.docker_manager import start_container, stop_container, exec_in_container, start_container_multiarch
+from utils.docker_manager import start_container, stop_container, exec_in_container
 from utils.scan_manager import run_scan
 from utils.history_manager import record_event
 import time
@@ -14,7 +14,7 @@ def run_attack(plugin, defense_config):
     5. 檢查結果 → exploited / exploit_failed
     6. 停掉 container
     """
-    start_container_multiarch()
+    start_container()
 
     # 1. 掃描
     open_ports = run_scan("127.0.0.1", ports="1-1024")

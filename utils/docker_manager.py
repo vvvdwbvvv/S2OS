@@ -17,7 +17,6 @@ def start_container():
         "--name", NAME,
         "-p", "2222:22",  # SSH
         "-p", "80:80",    # HTTP
-        "-v", f"{os.getcwd()}:/opt/app:ro",
         IMAGE
     ], check=True)
     record_event("vm_started", detail={"type":"docker","container":NAME})
@@ -38,36 +37,12 @@ def exec_in_container(cmd):
     return res.stdout + res.stderr
 
 def enable_multiplatform_emulation():
-    """
-    在宿主机上注册 QEMU 多架构支持，确保可以运行 linux/amd64 容器。
-    只需运行一次或在每次启动前执行。
-    """
-    subprocess.run([
-        "docker", "run", "--rm", "--privileged",
-        "multiarch/qemu-user-static",
-        "--reset", "-p", "yes"
-    ], check=True)
-
-
-def start_container_multiarch():
-    """
-    启动一个 linux/amd64 平台的 vuln2 容器，使用 QEMU 多架构模拟。
-    """
-    # 注册 multiarch QEMU 支持
-    enable_multiplatform_emulation()
-    # 清理旧容器
-    subprocess.run(["docker", "rm", "-f", NAME], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    # 启动新容器
-    subprocess.run([
-        "docker", "run", "-d",
-        "--privileged", 
-        "--platform", "linux/amd64",
-        "--name", NAME,
-        "-p", "2222:22",
-        "-p", "80:80",
-        "-v", f"{os.getcwd()}:/opt/app:ro",
-        IMAGE
-    ], check=True)
-    record_event("vm_started", detail={"type": "docker/amd64", "container": NAME})
-    # 等待容器内服务启动
-    time.sleep(5)
+    try:
+        subprocess.run([
+            "docker", "run", "--rm", 
+            "tonistiigi/binfmt", "--install", "all"
+        ], check=True)
+    except subprocess.CalledProcessError as e:
+        # Mac 上會失敗，可以跳過
+        record_event("warning", detail={"msg": "binfmt install failed, skipping", "error": str(e)})
+   
