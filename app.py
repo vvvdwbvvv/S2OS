@@ -1,10 +1,11 @@
 # app.py
 import streamlit as st
 import ctypes
+from utils.fake_server import clear_serial_log, run_fake_defense
 from utils.plugin_loader import load_plugins
 from utils.vm_controller import run_vm_and_check
 from utils.defense_config import render_defense_config
-from utils.history_manager import record_attack, load_history
+from utils.history_manager import clear_event_log, record_attack, load_history
 from utils.visualizer import plot_success_rate
 from utils.history_manager import initialize_history_file
 from utils.attack_manager import run_attack
@@ -12,6 +13,8 @@ from utils.vm_controller import run_defense
 from utils.history_manager import load_events
 import time
 
+clear_serial_log()
+clear_event_log()
 SERIAL_LOG = "serial.log"
 
 def append_serial_log(msg):
@@ -53,9 +56,15 @@ if st.button("🚀 發動攻擊") and selected_plugins:
         success = run_attack(plugin, defense_config)
         st.success("✅ Exploit 成功" if success else "❌ Exploit 失敗")
 
+defense_choices = st.sidebar.multiselect(
+    "Select Defense Actions",
+    ["Patch vsftpd", "Close port 21", "Revert snapshot"]
+)
+
 if st.sidebar.button("🛡️ 執行防禦"):
-    out = run_defense(defense_config)
-    st.sidebar.text(out)
+    for choice in defense_choices:
+        msg = run_fake_defense(choice, defense_config)
+        st.sidebar.text(msg)
 
 st.subheader("Serial Log")
 try:

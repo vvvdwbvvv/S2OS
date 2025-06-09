@@ -1,7 +1,7 @@
-[]{"timestamp": "2025-06-09T05:17:34.922910Z", "event": "vm_started", "detail": {"type": "fake"}}
-{"timestamp": "2025-06-09T05:17:35.142619Z", "event": "exposed", "detail": {"plugin": null, "open_ports": [22, 443]}}
-{"timestamp": "2025-06-09T05:17:35.143686Z", "event": "exposed", "detail": {"plugin": "kernel_exploit", "open_ports": [22, 443]}}
-{"timestamp": "2025-06-09T05:17:35.320965Z", "event": "exploit_start", "detail": {"plugin": "kernel_exploit"}}
-{"timestamp": "2025-06-09T05:17:35.321100Z", "event": "exploit_output", "detail": {"output": "EXPLOIT_SUCCESS"}}
-{"timestamp": "2025-06-09T05:17:35.321641Z", "event": "exploited", "detail": {"plugin": "kernel_exploit", "success": true, "output": "EXPLOIT_SUCCESS"}}
-{"timestamp": "2025-06-09T05:17:35.424973Z", "event": "vm_stopped", "detail": {}}
+[]{"timestamp": "2025-06-09T05:38:01.811054Z", "event": "vm_started", "detail": {"type": "fake"}}
+{"timestamp": "2025-06-09T05:38:02.025126Z", "event": "exposed", "detail": {"plugin": null, "open_ports": [22, 443, 3306]}}
+{"timestamp": "2025-06-09T05:38:02.025518Z", "event": "exposed", "detail": {"plugin": "kernel_exploit", "open_ports": [22, 443, 3306]}}
+{"timestamp": "2025-06-09T05:38:02.199660Z", "event": "exploit_start", "detail": {"plugin": "kernel_exploit"}}
+{"timestamp": "2025-06-09T05:38:02.200412Z", "event": "exploit_output", "detail": {"output": "EXPLOIT_SUCCESS"}}
+{"timestamp": "2025-06-09T05:38:02.200655Z", "event": "exploited", "detail": {"plugin": "kernel_exploit", "success": true, "output": "EXPLOIT_SUCCESS"}}
+{"timestamp": "2025-06-09T05:38:02.307447Z", "event": "vm_stopped", "detail": {}}

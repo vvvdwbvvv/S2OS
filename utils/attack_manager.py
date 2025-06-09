@@ -54,7 +54,7 @@ def run_attack(plugin, defense_config):
 
     # # 7. 停掉容器
     # stop_container()
-    success = exec_fake_exploit(plugin)
+    success = exec_fake_exploit(plugin,defense_config)
 
 
     stop_fake_server()
