@@ -2,8 +2,17 @@
   cve: CVE-2023-0001
   arch: x86_64
   so_path: plugins/buffer_overflow.so
+  cmd:
+    - bash
+    - -c
+    - chmod +x /opt/plugins/buffer_overflow.so && /opt/plugins/buffer_overflow.so
+  
 
 - name: Format String Exploit
   cve: CVE-2023-0002
   arch: x86_64
   so_path: plugins/format_string.so
+  cmd:
+    - bash
+    - -c
+    - chmod +x /opt/plugins/format_string.so && /opt/plugins/format_string.so

@@ -1,0 +1,18 @@
+# Dockerfile.vuln （基于 Ubuntu 22.04 ARM64）
+FROM arm64v8/ubuntu:22.04
+
+# 安装老版 vsftpd（示例 CVE），netcat 方便 exploit
+RUN apt-get update && \
+    apt-get install -y wget build-essential && \
+    # 从官方旧版源拿 vsftpd 2.3.4
+    wget http://security.ubuntu.com/ubuntu/pool/main/v/vsftpd/vsftpd_2.3.4-3ubuntu2_amd64.deb && \
+    dpkg -i vsftpd_2.3.4-3ubuntu2_amd64.deb || apt-get -f install -y && \
+    rm vsftpd_2.3.4-3ubuntu2_amd64.deb && \
+    apt-get install -y netcat && \
+    mkdir -p /opt/plugins
+
+# 将本地 plugins 目录挂到 /opt/plugins
+VOLUME ["/opt/app/plugins"]
+
+# 默认启动 vsftpd
+CMD ["bash", "-lc", "vsftpd & sleep infinity"]

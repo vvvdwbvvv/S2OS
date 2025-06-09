@@ -1,53 +1,51 @@
 # utils/attack_manager.py
-import ctypes
-import subprocess
-import os
-import time
-from utils.history_manager import record_event
+from utils.docker_manager import start_container, stop_container, exec_in_container, start_container_multiarch
 from utils.scan_manager import run_scan
+from utils.history_manager import record_event
+import time
+import os
 
-def run_attack(plugin, vm_paths, defense_config):
+def run_attack(plugin, defense_config):
     """
-    執行單一攻擊 plugin，並且記錄 'exposed','detected','exploited' 三種事件。
-    返回最後的 success(bool)。
+    1. (Re)啟動 container
+    2. 掃描階段 → detected
+    3. record exposed
+    4. 在 container 裡執行 exploit
+    5. 檢查結果 → exploited / exploit_failed
+    6. 停掉 container
     """
-    so_path = plugin["so_path"]
-    name = plugin["name"]
-    # 1. 標記「已暴露漏洞」
-    record_event("vm_started", detail={"kernel": vm_paths["kernel"], "image": vm_paths["rootfs"]})
-    # 這裡假設 VM 用 hostfwd map 到 localhost:2222 SSH 或 http
-    time.sleep(15)  # 等待 VM 完全 boot
+    start_container_multiarch()
 
-    vm_ip = "127.0.0.1"    
-    vm_ssh_port = 2222       
-    ports = "1-1024"        
-    open_ports = run_scan(vm_ip, ports=ports)
+    # 1. 掃描
+    open_ports = run_scan("127.0.0.1", ports="1-1024")
+    record_event("exposed", detail={
+        "plugin": plugin.get("name"),
+        "open_ports": open_ports
+    })
 
-    # 3. 記錄「已暴露漏洞」
-    record_event("exposed", detail={"plugin": plugin["name"], "open_ports": open_ports})
+    # 2. 準備執行命令（cmd）
+    cmd = plugin.get("cmd")
+    if not cmd:
+        # plugin["so_path"] 指向本地 plugins/<xxx>.so
+        rel = plugin["plugin_path"]
+        container_path = f"/opt/app/{rel}"
+        cmd = ["bash", "-c", f"chmod +x {container_path} && {container_path}"]
+        record_event("warning", detail={
+            "msg": "自动生成 cmd",
+            "auto_cmd": cmd
+        })
+    # 2. 執行 exploit
+    record_event("exploit_start", detail={"plugin": plugin.get("name")})
+    # 假設 plugin["cmd"] 是一個 list，像 ["./exploit-bin", "arg1", "..."]
+    out = exec_in_container(cmd)
+    record_event("exploit_output", detail={"output": out})
 
-    try:
-        lib = ctypes.CDLL(so_path)
-        lib.run_exploit()
-    except OSError:
-        # fallback: 如果 .so 載入失敗，可以改用 subprocess 執行可執行檔
-        bin_path = plugin.get("bin_path")
-        if not bin_path or not os.path.exists(bin_path):
-            raise
-        subprocess.run([bin_path], check=True)
-
-    # 3. 標記「已檢測到漏洞」（不論是否攻擊成功）
-    record_event("detected", detail={"plugin": name})
-
-    # 4. 檢測實際影響（透過 vm_controller 取得結果）
-    from utils.vm_controller import run_vm_and_check
-    success = run_vm_and_check(
-        kernel_path=vm_paths["kernel"],
-        image_path=vm_paths["rootfs"],
-        log_path=vm_paths["serial_log"]
-    )
-
-    # 5. 標記最終結果
+    # 3. 檢查是否成功（簡單以 output 裡有 "uid=0" 或 "root@" 為標準）
+    success_markers = ["uid=0", "root@", plugin.get("success_log", "EXPLOIT_SUCCESS")]
+    success = any(m in out for m in success_markers)
     record_event("exploited" if success else "exploit_failed",
-                 detail={"plugin": name})
+                 detail={"plugin": plugin.get("name")})
+
+    # 7. 停掉容器
+    stop_container()
     return success

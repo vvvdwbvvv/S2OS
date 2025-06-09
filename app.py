@@ -7,6 +7,9 @@ from utils.defense_config import render_defense_config
 from utils.history_manager import record_attack, load_history
 from utils.visualizer import plot_success_rate
 from utils.history_manager import initialize_history_file
+from utils.attack_manager import run_attack
+from utils.vm_controller import run_defense
+from utils.history_manager import load_events
 
 st.set_page_config(page_title="S2OS", layout="wide")
 st.title("SimSecureOS - 攻擊模擬平台")
@@ -33,21 +36,17 @@ selected_plugins = st.multiselect(
 
 if st.button("🚀 發動攻擊") and selected_plugins:
     for plugin in selected_plugins:
-        st.write(f"---\n**執行攻擊：** {plugin['name']}")
-        try:
-            lib = ctypes.CDLL(plugin["so_path"])
-            lib.run_exploit()
-            with open("vm/serial.log") as f:
-                st.text(f.read())
-            success = run_vm_and_check(
-                kernel_path="vm/buildroot-2024.02/output/images/bzImage",
-                image_path="vm/buildroot-2024.02/output/images/rootfs.ext2",
-                log_path="vm/serial.log"
-            )
-            st.success("✅ 成功！" if success else "❌ 攻擊失敗")
-            record_attack(plugin, success, defense_config)
-        except Exception as e:
-            st.error(f"[錯誤] 無法載入 plugin：{plugin['name']}\n{str(e)}")
+        success = run_attack(plugin, defense_config)
+        st.success("✅ Exploit 成功" if success else "❌ Exploit 失敗")
+
+if st.sidebar.button("🛡️ 執行防禦"):
+    out = run_defense(defense_config)
+    st.sidebar.text(out)
+
+
+st.subheader("事件序列")
+events = load_events()
+st.json(events)
 
 # 歷史記錄顯示
 st.subheader("攻擊歷史紀錄")
