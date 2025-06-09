@@ -154,31 +154,17 @@
 
 #### **Core Components**
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Streamlit UI  │───▶│   API Service   │───▶│   QEMU VM      │
-│   (Port 8501)   │    │   (Port 8000)   │    │  (Target OS)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       ▼                       │
-         │              ┌─────────────────┐              │
-         │              │  Celery Worker  │              │
-         │              │ (Background)    │              │
-         │              └─────────────────┘              │
-         │                       │                       │
-         └───────────────────────▼───────────────────────┘
-                        ┌─────────────────┐
-                        │     Redis       │
-                        │ (Message Queue) │
-                        └─────────────────┘
+┌─────────────────┐    ┌─────────────────┐
+│   Streamlit UI  │───▶│   QEMU VM       │
+│   (Port 8501)   │    │  (Target OS)    │
+└─────────────────┘    └─────────────────┘
+
 ```
 
 #### **Technology Stack**
 - **Frontend**: Streamlit (Python web framework)
-- **Backend**: FastAPI for REST API
 - **Virtualization**: QEMU/KVM for target systems
 - **Containerization**: Docker + Docker Compose
-- **Task Queue**: Celery with Redis
-- **Data Storage**: PostgreSQL + CSV for logs
 - **Visualization**: Plotly for analytics
 
 ### 🎮 User Interface Demo
@@ -205,29 +191,7 @@
   - Target: Custom vulnerable C application
   - Success rate: ~80% without defenses
   - Technique: Stack-based buffer overflow
-  
-- **Format String Exploit** (CVE-2023-0002)
-  - Target: Vulnerable logging service
-  - Success rate: ~75% without defenses
-  - Technique: Format string vulnerability
-
 ### 🔧 Technical Implementation
-
-#### **Plugin System Architecture**
-```yaml
-# Example plugin configuration
-- name: Buffer Overflow
-  cve: CVE-2023-0001
-  arch: x86_64
-  so_path: plugins/buffer_overflow.so
-  cmd:
-    - bash
-    - -c
-    - chmod +x /opt/plugins/buffer_overflow.so && /opt/plugins/buffer_overflow.so
-  fake_success_rate: 0.8
-  fake_delay: 0.1
-  target_ports: [22, 80, 443]
-```
 
 #### **Attack Execution Flow**
 1. **VM Initialization**: Start QEMU target system
@@ -236,30 +200,17 @@
 4. **Result Analysis**: Check for successful exploitation
 5. **Cleanup**: Stop VM and log results
 
-#### **Defense Simulation**
-```python
-def apply_defenses(config):
-    if config.get("canary"):
-        success_rate *= 0.4  # Stack canaries reduce success
-    if config.get("aslr"):
-        success_rate *= 0.5  # ASLR makes exploitation harder
-    if config.get("dep"):
-        success_rate *= 0.7  # DEP prevents code execution
-```
-
 ### 📊 Analytics and Reporting
 
 #### **Attack History Tracking**
 - Timestamp and duration
 - Exploit type and success rate
 - Defense configurations tested
-- System performance metrics
 
 #### **Success Rate Visualization**
 - Interactive Plotly charts
 - Filtering by exploit type, time period
 - Comparison with/without defenses
-- Trend analysis over time
 
 ### 🚀 Live Demonstration
 
@@ -296,6 +247,7 @@ def apply_defenses(config):
 - **Educational Market**: 4,000+ universities worldwide
 - **Corporate Training**: 200,000+ companies with cybersecurity needs
 - **Government Agencies**: Military and law enforcement training
+- **Edge Computing Sector**: Emerging IoT and edge device security training demands
 
 ### 🌍 Social Impact
 
@@ -314,6 +266,12 @@ def apply_defenses(config):
 - **Remote Learning**: Support for distance education programs
 - **Open Source**: Community-driven improvements and contributions
 
+#### **Edge Computing Security Advancement**
+- **IoT Device Protection**: Security training for resource-constrained environments
+- **Distributed Threat Simulation**: Edge node attack scenario modeling
+- **Real-time Response Training**: Rapid incident handling in edge environments
+- **Lightweight Defense**: Security mechanism training for edge devices
+
 ### 🔒 Security Research Advancement
 
 #### **Vulnerability Research**
@@ -325,6 +283,7 @@ def apply_defenses(config):
 - **Mitigation Testing**: Validate defense mechanisms effectiveness
 - **Performance Impact**: Measure security vs. performance trade-offs
 - **Best Practices**: Develop evidence-based security guidelines
+- **Edge Computing Adaptation**: Develop lightweight security solutions for edge environments
 
 ### 📈 Measurable Outcomes
 
@@ -421,35 +380,6 @@ def apply_defenses(config):
 - **Industry standard for cybersecurity education**
 - **$50M ARR with profitable operations**
 - **IPO or strategic acquisition opportunity**
-
-### 🤝 Call to Action
-
-#### **For Investors**
-- **Proven Market Demand**: $15.6B cybersecurity training market
-- **Strong Technical Foundation**: Scalable, open-source platform
-- **Experienced Team**: Combined 20+ years in cybersecurity and education
-- **Clear Path to Profitability**: Multiple revenue streams and cost-effective model
-
-#### **For Educational Partners**
-- **Pilot Program**: Free 6-month trial for early adopters
-- **Custom Development**: Tailored modules for specific curriculum needs
-- **Training and Support**: Comprehensive onboarding and ongoing assistance
-- **Research Collaboration**: Joint research opportunities and publication
-
-#### **For the Community**
-- **Open Source Contribution**: GitHub repository for community development
-- **Bug Bounty Program**: Rewards for security vulnerabilities and improvements
-- **Knowledge Sharing**: Regular webinars and training sessions
-- **Feedback Loop**: Direct input on product development and roadmap
-
----
-
-## 📞 Contact Information
-
-**Project Repository**: [GitHub - S2OS](https://github.com/team/s2os)
-**Demo Platform**: [demo.s2os.com](https://demo.s2os.com)
-**Email**: contact@s2os.com
-**LinkedIn**: [S2OS Team](https://linkedin.com/company/s2os)
 
 ---
 
