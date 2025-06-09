@@ -1,7 +1,7 @@
 # app.py
 import streamlit as st
 import ctypes
-from utils.fake_server import clear_serial_log, run_fake_defense
+from utils.fake_server import clear_serial_log, run_fake_defense, show_serial_log
 from utils.plugin_loader import load_plugins
 from utils.vm_controller import run_vm_and_check
 from utils.defense_config import render_defense_config
@@ -67,12 +67,7 @@ if st.sidebar.button("🛡️ 執行防禦"):
         st.sidebar.text(msg)
 
 st.subheader("Serial Log")
-try:
-    with open("serial.log") as f:
-        log = f.read()
-    st.code(log, language="bash")
-except FileNotFoundError:
-    st.info("=No Serial log found")
+show_serial_log()
 
 st.subheader("事件序列")
 events = load_events()

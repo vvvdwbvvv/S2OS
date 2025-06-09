@@ -1,5 +1,6 @@
 # utils/fake_server.py
 import time
+import streamlit as st
 import random
 from utils import defense_config
 import time
@@ -145,3 +146,19 @@ def run_fake_defense(defense_choice, defense_config=None):
     time.sleep(0.1)
     # Return a summary for UI
     return "\n".join(messages)
+
+
+def show_serial_log(logfile="serial.log", delay=0.07):
+    placeholder = st.empty()
+    log_lines = []
+    try:
+        with open(logfile) as f:
+            log_lines = f.readlines()
+    except FileNotFoundError:
+        placeholder.info("No serial log found yet.")
+        return
+    output = ""
+    for line in log_lines:
+        output += line
+        placeholder.code(output, language="bash")
+        time.sleep(delay)  # adjust delay to control speed
